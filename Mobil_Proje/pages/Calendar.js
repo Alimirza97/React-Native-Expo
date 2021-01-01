@@ -4,23 +4,33 @@ import { Alert, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import * as firebase from 'firebase';
 
-const testIDs = require('../testIDs');
-
 export class Calendar extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       items: {},
-      time: ""
+      notes: []
     };
   }
-  setValue() {
+  setValue = async (zaman) => {
+    firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/' + zaman).orderByKey().on('value', snapshot => {
+      snapshot.forEach(childSnapshot => {
+        console.log("************************")
+        this.state.notes.push(childSnapshot.key)
+        console.log(childSnapshot.key)
+        console.log("************************")
+      })
+      
+      /*var deger = snapshot.val().split(':')*/
+    });
+  }
+  componentDidMount = async () => {
+
   }
   render() {
     return (
       <Agenda
-        testID={testIDs.agenda.CONTAINER}
         items={this.state.items}
         loadItemsForMonth={this.loadItems.bind(this)}
         selected={'2020-12-01'}
@@ -50,6 +60,7 @@ export class Calendar extends Component {
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
+        console.log("strTime:" + strTime);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
           /*const numItems = Math.floor(Math.random() * 3 + 1);
@@ -59,10 +70,25 @@ export class Calendar extends Component {
               height: Math.max(50, Math.floor(Math.random() * 150))
             });
           }*/
-          this.state.items[strTime].push({
-            name: '',
-            height: 50
-          });
+          var bayrak = true;
+          this.setValue(strTime);
+          this.state.notes.forEach(deger =>{
+            this.state.items[strTime].push({
+              name: deger,
+              time: strTime,
+              height: 50
+            });
+            bayrak = false;
+          })
+          this.setState({notes: []})
+          if(bayrak)
+          {
+            this.state.items[strTime].push({
+              name: "",
+              time: strTime,
+              height: 50
+            });
+          }
         }
       }
       const newItems = {};
@@ -78,9 +104,8 @@ export class Calendar extends Component {
   renderItem(item) {
     return (
       <TouchableOpacity
-        testID={testIDs.agenda.ITEM}
         style={[styles.item, { height: item.height }]}
-        onPress={() => this.props.navigation.navigate('Notes', {zaman: item.time})}
+        onPress={() => this.props.navigation.navigate('Notes', { name: item.time })}
       >
         <Text>{item.name}</Text>
       </TouchableOpacity>

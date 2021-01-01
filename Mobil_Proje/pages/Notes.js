@@ -6,7 +6,7 @@ export class Notes extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            time: this.props.navigation.getParam('zaman'),
+            time: this.props.route.params.name,
             value: ""
         };
     }
@@ -14,7 +14,10 @@ export class Notes extends Component {
         const { value, time} = this.state;
         if(value != "")
         {
-            firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).set({ value: `${value}` });
+            console.log("UserUID: " + firebase.auth().currentUser.uid);
+            console.log("Time: " + time);
+            console.log("Value: " + value);
+            firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).child(`${value}`).set({ note: `${value}` });
         }
         else{
             Alert.alert(
@@ -26,7 +29,7 @@ export class Notes extends Component {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                   },
-                  { text: "Evet", onPress: () => firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child("time").set({ value: `${value}` }) }
+                  { text: "Evet", onPress: () => firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).set({ note: `${value}` }) }
                 ],
                 { cancelable: false }
               );

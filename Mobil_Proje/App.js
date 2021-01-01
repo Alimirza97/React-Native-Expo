@@ -89,11 +89,13 @@ export default function App() {
       measurementId: "G-MCCPCVZK3E"
     };
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     setLoad(true);
     /*firebase.database().ref('users').child('1').set({
       email: "Taha@gmail.com"});
-      
+
     firebase.database().ref('events/').on('value', snapshot => {
         this.setState({ events: snapshot.val()})
     });*/
@@ -116,12 +118,12 @@ export default function App() {
               </TouchableOpacity>
             ),
           }} />
-          <StackNav.Screen name="Calendar" component={TabNavigator} options={{ title: 'Takvim' }} />
-          <StackNav.Screen name="Memory" component={TabNavigator} options={{ title: 'Anılar' }} />
-          <StackNav.Screen name="Notes" component={Notes} options={{ title: 'Notlar' }} />
+          <StackNav.Screen name="Calendar" component={TabNavigator} options={{ title: 'Takvim', headerShown: false }} />
+          <StackNav.Screen name="Memory" component={TabNavigator} options={{ title: 'Anılar', headerShown: false }} />
+          <StackNav.Screen name="Notes" component={Notes} options={{ title: 'Notlar', headerShown: false }} />
           <StackNav.Screen name="Login" component={Login} options={{ title: '  Giriş Yap', headerLeft: null }} />
           <StackNav.Screen name="Register" component={Register} options={{ title: 'Kayıt Ol' }} />
-          <StackNav.Screen name="LoadingScreen" component={LoadingScreen} options={{ title: '' }} />
+          <StackNav.Screen name="LoadingScreen" component={LoadingScreen} options={{ title: '', headerShown: false }} />
         </StackNav.Navigator>
       </NavigationContainer>
     );
