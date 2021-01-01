@@ -1,142 +1,82 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button} from 'react-native';
-
-export class Notes extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    return (
-      <View>
-        <Text>
-            Notlarin
-        </Text>
-        <TextInput
-            placeholder = "Bir Şey Yaz"
-            numberOfLines={8}
-        >
-        </TextInput>
-        <Button
-            title = "Tıkla"
-        >
-        </Button>
-      </View>
-    );
-  }
-}
-
-
-
-
-
-/*
-
-import React, { Component } from 'react';
-import { SafeAreaView, ViewPropTypes, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
-import PropTypes from 'prop-types';
-
-import CommentInput from '../components/CommentInput.js';
-import CommentList from '../components/CommentList.js';
-
-const ASYNC_STORAGE_COMMENTS_KEY = 'ASYNC_STORAGE_COMMENTS_KEY';
+import { StyleSheet, View, Text, TextInput, Button, SafeAreaView, Alert } from 'react-native';
+import * as firebase from 'firebase';
 
 export class Notes extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commentsForItem: {},
-            showModal: false,
-            selectedItemId: null,
+            time: this.props.navigation.getParam('zaman'),
+            value: ""
         };
     }
-    async componentDidMount() {
-        try {
-          const commentsForItem = await AsyncStorage.getItem(
-            ASYNC_STORAGE_COMMENTS_KEY,
-          );
-          this.setState({
-            commentsForItem: commentsForItem
-              ? JSON.parse(commentsForItem)
-              : {},
-          });
-        } catch (e) {
-          console.log('Failed to load comments');
+    setValue() {
+        const { value, time} = this.state;
+        if(value != "")
+        {
+            firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).set({ value: `${value}` });
         }
-      }
-
-    closeCommentScreen = () => {
-        this.setState({
-            showModal: false,
-            selectedItemId: null,
-        });
-    };
-    onSubmitComment = async text => {
-        const { selectedItemId, commentsForItem } = this.state;
-        const comments = commentsForItem[selectedItemId] || [];
-
-        const updated = {
-            ...commentsForItem,
-            [selectedItemId]: [...comments, text],
-        };
-
-        this.setState({ commentsForItem: updated });
-
-        try {
-            await AsyncStorage.setItem(
-                ASYNC_STORAGE_COMMENTS_KEY,
-                JSON.stringify(updated),
-            );
-        } catch (e) {
-            console.log(
-                'Failed to save comment',
-                text,
-                'for',
-                selectedItemId,
-            );
+        else{
+            Alert.alert(
+                "Mesaj Alanı Boş",
+                "Mesaj alanını boş bıralmak istediğine emin misin?",
+                [
+                  {
+                    text: "Hayır",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                  },
+                  { text: "Evet", onPress: () => firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child("time").set({ value: `${value}` }) }
+                ],
+                { cancelable: false }
+              );
+          
         }
-    };
+    }
     render() {
-        const { commentsForItem, showModal, selectedItemId } = this.state;
         return (
-            <SafeAreaView style={styles.comments}>
-                <CommentInput
-                    placeholder="Leave a comment"
-                    onSubmit={this.onSubmitComment}
-                />
-                <CommentList items={commentsForItem[selectedItemId] || []} />
+            <SafeAreaView style={styles.safeAreaView}>
+                <View style={styles.container}>
+                    <TextInput
+                        placeholder="Mesajınızı Yazın..."
+                        placeholderTextColor="black"
+                        style={styles.paragraph}
+                        multiline={true}
+                        onChangeText={text => this.setState({ value: text })} />
+
+                </View>
+                <Button
+                    title="Kaydet"
+                    style={styles.btn}
+                    onPress={this.setValue.bind(this)}
+                >
+                </Button>
             </SafeAreaView>
         );
     }
 }
 
-
-Notes.propTypes = {
-    style: ViewPropTypes.style,
-    comments: PropTypes.arrayOf(PropTypes.string).isRequired,
-    onClose: PropTypes.func.isRequired,
-    onSubmitComment: PropTypes.func.isRequired,
-};
-Notes.defaultProps = {
-    style: null,
-};
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        paddingTop: 10,
+        backgroundColor: '#ecf0f1',
+        padding: 8,
     },
-    comments: {
+    safeAreaView:{
         flex: 1,
-        marginTop:
-            Platform.OS === 'ios' && platformVersion < 11
-                ? Constants.statusBarHeight
-                : 0,
+        backgroundColor: '#ecf0f1',
+        padding: 18,
     },
-
+    paragraph: {
+        margin: 24,
+        fontSize: 18,
+        backgroundColor: '#ecf0f1',
+        textAlign: "center",
+        textAlignVertical: "top"
+    },
+    btn: {
+        justifyContent: "flex-end",
+        textAlign: "center",
+    }
 });
-
-*/

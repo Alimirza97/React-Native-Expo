@@ -10,9 +10,6 @@ export class Home extends Component {
     };
   }
   componentDidMount() {
-    /*firebase.auth()
-      .signOut()
-      .then(() => console.log('Kullanici Cikis Yapti'));*/
   }
   render() {
     return (

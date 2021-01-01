@@ -17,29 +17,87 @@ export class Register extends Component {
             firebase.auth()
                 .createUserWithEmailAndPassword(email, password1)
                 .then(() => {
-                    Alert.alert('Hesabınız Başarılı Bir Şekilde Oluşturuldu');
+                    Alert.alert(
+                        "İşlem Tamamlandi",
+                        "Hesabınız Başarılı Bir Şekilde Oluşturuldu.",
+                        [
+                            {
+                                text: "Tamam",
+                                onPress: () => console.log("Cancel Pressed"),
+                                style: "cancel"
+                            }
+                        ],
+                        { cancelable: false }
+                    );
                     console.log('Kullanici hesabı olusturuldu ve oturum acildi');
                     this.props.navigation.navigate('Home');
                 })
                 .catch(error => {
                     if (error.code === 'auth/email-already-in-use') {
-                        Alert.alert('Bu e-posta adresi zaten kullanımda!');
+                        Alert.alert(
+                            "Hata!",
+                            "Bu E-posta Adresi Zaten Kullanılıyor.",
+                            [
+                                {
+                                    text: "Tamam",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                }
+                            ],
+                            { cancelable: false }
+                        );
                         console.log('Kullanici var olan bir e-post kullandi');
                     }
-                    if (error.code === 'auth/invalid-email') {
-                        Alert.alert('Bu e-posta adresi geçersiz!');
+                    else if (error.code === 'auth/invalid-email') {
+                        Alert.alert(
+                            "Hata!",
+                            "Bu e-posta adresi geçersiz!",
+                            [
+                                {
+                                    text: "Tamam",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                }
+                            ],
+                            { cancelable: false }
+                        );
                         console.log('Kullanici gecersiz e-post girdi');
                     }
-                    console.error(error);
+                    else {
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        Alert.alert(
+                            `${errorCode}`,
+                            `${errorMessage}`,
+                            [
+                                {
+                                    text: "Tamam",
+                                    onPress: () => console.log("Cancel Pressed"),
+                                    style: "cancel"
+                                }
+                            ],
+                            { cancelable: false }
+                        );
+                    }
                 });
         }
         else {
-            Alert.alert('Şifre Tekrarı ile Şifre Aynı Değil!');
+            Alert.alert(
+                "Hata!",
+                "Şifre Tekrarı ile Şifre Aynı Değil!",
+                [
+                    {
+                        text: "Tamam",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                    }
+                ],
+                { cancelable: false }
+            );
             console.log('Kullanici farkli iki sifre girdi');
         }
     }
-    onLoginPress()
-    {
+    onLoginPress() {
         this.props.navigation.navigate('Login');
     }
     render() {

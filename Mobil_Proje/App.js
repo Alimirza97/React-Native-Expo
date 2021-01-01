@@ -12,7 +12,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity} from 'react-native';
 import * as firebase from 'firebase';
 
 const Tab = createBottomTabNavigator();
@@ -92,9 +92,9 @@ export default function App() {
     firebase.initializeApp(firebaseConfig);
     setLoad(true);
     /*firebase.database().ref('users').child('1').set({
-      email: "Taha@gmail.com"
-  });*/
-    /*firebase.database().ref('events/').on('value', snapshot => {
+      email: "Taha@gmail.com"});
+      
+    firebase.database().ref('events/').on('value', snapshot => {
         this.setState({ events: snapshot.val()})
     });*/
   }, []);
@@ -103,7 +103,7 @@ export default function App() {
       <NavigationContainer>
         <StackNav.Navigator initialRouteName="LoadingScreen">
           <StackNav.Screen name="Home" component={TabNavigator} options={{
-            headerTitle: 'Ana Sayfa', headerRight: () => (
+            headerTitle: '  Uygulamanın Adı', headerLeft: null, headerRight: () => (
               <TouchableOpacity
                 onPress={LogOut}
               >
@@ -117,9 +117,9 @@ export default function App() {
             ),
           }} />
           <StackNav.Screen name="Calendar" component={TabNavigator} options={{ title: 'Takvim' }} />
-          <StackNav.Screen name="Memory" component={TabNavigator} options={{ title: 'Hatıralar' }} />
+          <StackNav.Screen name="Memory" component={TabNavigator} options={{ title: 'Anılar' }} />
           <StackNav.Screen name="Notes" component={Notes} options={{ title: 'Notlar' }} />
-          <StackNav.Screen name="Login" component={Login} options={{ title: 'Giriş Yap' }} />
+          <StackNav.Screen name="Login" component={Login} options={{ title: '  Giriş Yap', headerLeft: null }} />
           <StackNav.Screen name="Register" component={Register} options={{ title: 'Kayıt Ol' }} />
           <StackNav.Screen name="LoadingScreen" component={LoadingScreen} options={{ title: '' }} />
         </StackNav.Navigator>
@@ -129,7 +129,7 @@ export default function App() {
   else {
     return (
       <Text>
-        Ali
+        İnternet Bağlantınızı Kontrol Edin.
       </Text>
     );
 
