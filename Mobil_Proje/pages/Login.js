@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 //import { Alert, Button, Text, TouchableOpacity, TextInput, View, StyleSheet } from 'react-native';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
@@ -137,6 +138,8 @@ export class Login extends Component {
                     <Text style={styles.BtnText}></Text>
                     <Text style={styles.BtnText}>Hesabınız yok mu? Kayıt Olun</Text>
                 </TouchableOpacity>
+                
+                <StatusBar style="auto" />
             </View>
         );
     }

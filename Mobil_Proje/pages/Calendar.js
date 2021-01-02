@@ -13,7 +13,7 @@ export class Calendar extends Component {
       notes: []
     };
   }
-  setValue = async (zaman) => {
+  setValue = async(zaman) => {
     firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/' + zaman).orderByKey().on('value', snapshot => {
       snapshot.forEach(childSnapshot => {
         console.log("************************")
@@ -21,37 +21,36 @@ export class Calendar extends Component {
         console.log(childSnapshot.key)
         console.log("************************")
       })
-      
       /*var deger = snapshot.val().split(':')*/
     });
   }
-  componentDidMount = async () => {
+  componentDidMount = async() => {
 
   }
   render() {
     return (
-      <Agenda
-        items={this.state.items}
-        loadItemsForMonth={this.loadItems.bind(this)}
-        selected={'2020-12-01'}
-        renderItem={this.renderItem.bind(this)}
-        renderEmptyDate={this.renderEmptyDate.bind(this)}
-        rowHasChanged={this.rowHasChanged.bind(this)}
-      // markingType={'period'}
-      // markedDates={{
-      //    '2017-05-08': {textColor: '#43515c'},
-      //    '2017-05-09': {textColor: '#43515c'},
-      //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-      //    '2017-05-21': {startingDay: true, color: 'blue'},
-      //    '2017-05-22': {endingDay: true, color: 'gray'},
-      //    '2017-05-24': {startingDay: true, color: 'gray'},
-      //    '2017-05-25': {color: 'gray'},
-      //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-      // monthFormat={'yyyy'}
-      // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-      //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-      // hideExtraDays={false}
-      />
+        <Agenda
+          items={this.state.items}
+          loadItemsForMonth={this.loadItems.bind(this)}
+          selected={'2020-12-01'}
+          renderItem={this.renderItem.bind(this)}
+          renderEmptyDate={this.renderEmptyDate.bind(this)}
+          rowHasChanged={this.rowHasChanged.bind(this)}
+        // markingType={'period'}
+        // markedDates={{
+        //    '2017-05-08': {textColor: '#43515c'},
+        //    '2017-05-09': {textColor: '#43515c'},
+        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+        //    '2017-05-21': {startingDay: true, color: 'blue'},
+        //    '2017-05-22': {endingDay: true, color: 'gray'},
+        //    '2017-05-24': {startingDay: true, color: 'gray'},
+        //    '2017-05-25': {color: 'gray'},
+        //    '2017-05-26': {endingDay: true, color: 'gray'}}}
+        // monthFormat={'yyyy'}
+        // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+        //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+        // hideExtraDays={false}
+        />
     );
   }
 
@@ -60,7 +59,7 @@ export class Calendar extends Component {
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
-        console.log("strTime:" + strTime);
+        //console.log("strTime:" + strTime);
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
           /*const numItems = Math.floor(Math.random() * 3 + 1);
@@ -72,7 +71,7 @@ export class Calendar extends Component {
           }*/
           var bayrak = true;
           this.setValue(strTime);
-          this.state.notes.forEach(deger =>{
+          this.state.notes.forEach(deger => {
             this.state.items[strTime].push({
               name: deger,
               time: strTime,
@@ -80,9 +79,8 @@ export class Calendar extends Component {
             });
             bayrak = false;
           })
-          this.setState({notes: []})
-          if(bayrak)
-          {
+          this.setState({ notes: [] })
+          if (bayrak) {
             this.state.items[strTime].push({
               name: "",
               time: strTime,
@@ -115,7 +113,7 @@ export class Calendar extends Component {
   renderEmptyDate() {
     return (
       <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
+        <Text>Bugün İçin Bir Notunuz Yok.</Text>
       </View>
     );
   }

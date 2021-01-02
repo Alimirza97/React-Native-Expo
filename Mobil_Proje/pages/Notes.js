@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput, Button, SafeAreaView, Alert } from 'react-native';
 import * as firebase from 'firebase';
@@ -11,29 +12,33 @@ export class Notes extends Component {
         };
     }
     setValue() {
-        const { value, time} = this.state;
-        if(value != "")
-        {
+        const { value, time } = this.state;
+        if (value != "") {
             console.log("UserUID: " + firebase.auth().currentUser.uid);
             console.log("Time: " + time);
             console.log("Value: " + value);
             firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).child(`${value}`).set({ note: `${value}` });
+            this.props.navigation.navigate('Home');
         }
-        else{
+        else {
             Alert.alert(
                 "Mesaj Alanı Boş",
                 "Mesaj alanını boş bıralmak istediğine emin misin?",
                 [
-                  {
-                    text: "Hayır",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
-                  { text: "Evet", onPress: () => firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).set({ note: `${value}` }) }
+                    {
+                        text: "Hayır",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                    },
+                    {
+                        text: "Evet", onPress: () => {
+                            firebase.database().ref('users').child(`${firebase.auth().currentUser.uid}`).child(`${time}`).set({ note: `${value}` });
+                            this.props.navigation.navigate('Home');
+                        }
+                    }
                 ],
                 { cancelable: false }
-              );
-          
+            );
         }
     }
     render() {
@@ -54,6 +59,8 @@ export class Notes extends Component {
                     onPress={this.setValue.bind(this)}
                 >
                 </Button>
+
+                <StatusBar style="auto" />
             </SafeAreaView>
         );
     }
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ecf0f1',
         padding: 8,
     },
-    safeAreaView:{
+    safeAreaView: {
         flex: 1,
         backgroundColor: '#ecf0f1',
         padding: 18,

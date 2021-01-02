@@ -10,8 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity} from 'react-native';
 import * as firebase from 'firebase';
 
@@ -20,12 +19,6 @@ const StackNav = createStackNavigator();
 
 function TabNavigator() {
   return (
-    /*<Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Calendar" component={Calendar} />
-      <Tab.Screen name="Memory" component={Memory} />
-    </Tab.Navigator>*/
-
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{

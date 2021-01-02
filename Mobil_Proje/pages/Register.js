@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
 import * as firebase from 'firebase';
@@ -137,6 +138,7 @@ export class Register extends Component {
                     <Text style={styles.BtnText}></Text>
                     <Text style={styles.BtnText}>Zaten hesabınız var mi? Giriş Yap</Text>
                 </TouchableOpacity>
+                <StatusBar style="auto" />
             </View>
         );
     }
