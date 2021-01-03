@@ -39,11 +39,10 @@ export class Home extends Component {
     console.log("Şuanki Tarih: " + year + '-' + _month + '-' + _date);//format: dd-mm-yyyy;
     this.setValue(year + '-' + _month + '-' + _date);
     console.log("aaaaaaaaaaaaaaaaaaa")
-    {
-      this.state.notes.forEach(deger => {
-        console.log("aaaa: " + deger)
-      })
-    }
+    this.state.notes.forEach(deger => {
+      console.log("aaaa: " + deger)
+    })
+
   }
   setNotes() {
 
@@ -51,7 +50,7 @@ export class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-          <Text style={styles.header}>Bugün Yapılacak İşler </Text>
+        <Text style={styles.header}>Bugün Yapılacak İşler </Text>
         <FlatList
           data={this.state.notes}
           renderItem={({ item }) => (

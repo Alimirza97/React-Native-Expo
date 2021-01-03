@@ -103,7 +103,10 @@ export class Calendar extends Component {
     return (
       <TouchableOpacity
         style={[styles.item, { height: item.height }]}
-        onPress={() => this.props.navigation.navigate('Notes', { name: item.time })}
+        onPress={() => {
+          this.props.navigation.navigate('Notes', { name: item.time });
+          this.forceUpdate();
+      }}
       >
         <Text>{item.name}</Text>
       </TouchableOpacity>
